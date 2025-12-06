@@ -37,3 +37,5 @@ module.exports = router; // Makes this router available to other files
 
 //A switch is a control-flow statement that chooses one branch of code to run based on the value of an expression. 
 // It is often cleaner than a long chain of if/else if when you are matching discrete values.
+
+//notes
