@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="/favicon.ico">
+ <title>Calculator Exercise 2 and 3</title>
+</head>
+<body>
+  <div>
+    <label for="result">result</label>
+    <input id="result" type="number" readonly/> <!--readonly prevents the user from typing over the result.-->
+  </div>
+
+  <form id="calc">
+    <label>
+        <input id="number" type="number"/>
+        <input id="number1" type="number"/>
+    </label>
+
+    <label for="op">Operation>
+      <select id="op">
+        <option value="add">Add</option>
+        <option value="minus">Minus</option>
+        <option value="multiply">Multiply</option>
+        <option value="divide">Divide</option>
+      </select>
+    </label>
+    <button type="submit">Submit</button>
+  </form>
+  </body>
+  
+<script>
+document.getElementById("calc").addEventListener("submit", async (e) => {
+  e.preventDefault(); //Attaches a submit handler to the form. //e.preventDefault() stops the browser from reloading the page.
+
+  const a  = Number(document.getElementById("number").value); //Inputs return strings. Number(...) coerces them to numbers so 2 + 2 becomes 4 instead of the string "22".
+  const b  = Number(document.getElementById("number1").value);
+  const op = document.getElementById("op").value; //to build the url, Without it the server would not know whether to add, minus, multiply, or divide.
+  const resultEl = document.getElementById("result"); //update the result
+
+//Client-side validation to avoid useless requests: Rejects non-numeric values. Blocks division by zero.
+
+  if (!Number.isFinite(a) || !Number.isFinite(b)) {
+    alert("Please enter valid numbers.");
+    resultEl.value = "";
+    return;
+  }
+  if (op === "divide" && b === 0) {
+    alert("Cannot divide by zero.");
+    resultEl.value = "";
+    return;
+  }
+
+  try {
+    const url = `/calculator/${op}?num1=${encodeURIComponent(a)}&num2=${encodeURIComponent(b)}`;
+    const resp = await fetch(url);
+    const data = await resp.json();
+
+    if (!resp.ok) {
+      throw new Error(data.error || "Server error");
+    }
+    resultEl.value = data.result;
+  } catch (err) {
+    alert(err.message || "Network error");
+  }
+});
+</script>
+
+</html>
