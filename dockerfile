@@ -27,7 +27,7 @@ COPY . .
 # -----------------------------
 # 6. Expose port
 # -----------------------------
-EXPOSE 8000
+EXPOSE 8080
 
 # -----------------------------
 # 7. Set environment variable (optional)

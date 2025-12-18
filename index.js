@@ -2,12 +2,14 @@ const express = require("express"); //Loads the Express library.
 const swaggerUi = require("swagger-ui-express");
 require("dotenv").config();
 const app = express(); //Creates an Express application.
-const port = 3000; //Defines the port where the server will listen. //in the dockerfile we used port 8080, so change it to that 8080
+//const port = 3000; //Defines the port where the server will listen. //in the dockerfile we used port 8080, so change it to that 8080
 
 // Swagger (only if you have swagger.json)
 // const swaggerDocument = require("../swagger.json");
 // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+// IMPORTANT: listen on the EB-provided port
+const port = process.env.PORT ? Number(process.env.PORT) : 8080;
 
 //Middleware
 app.use(express.static("public")); //Serves static files from the public folder (HTML, CSS, JS).
