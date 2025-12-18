@@ -1,5 +1,6 @@
 const express = require("express"); //Loads the Express library.
 const swaggerUi = require("swagger-ui-express");
+require("dotenv").config();
 const app = express(); //Creates an Express application.
 const port = 3000; //Defines the port where the server will listen. //in the dockerfile we used port 8080, so change it to that 8080
 
@@ -14,6 +15,11 @@ app.use(express.static("public")); //Serves static files from the public folder 
 //Import and mount the calculator routes
 const calculatorRoutes = require("./routers/CalculatorRoutes"); //Imports the router from CalculatorRoutes.js.
 app.use("/calculator", calculatorRoutes); //Mounts the router so routes like /add, /minus are handled.
+
+// Simple root route to verify env is working
+app.get("/", (req, res) => {
+  res.send(`Hello, CUSTOM_VAR is: ${process.env.CUSTOM_VAR || "(not set)"}`);
+});
 
 //Global error-handling middleware. Error handler function from expressjs.com. The other way of handling the error in inside a function
 app.use((err, req, res, next) => {
