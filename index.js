@@ -11,6 +11,11 @@ const app = express(); //Creates an Express application.
 // IMPORTANT: listen on the EB-provided port
 const port = process.env.PORT ? Number(process.env.PORT) : 8080;
 
+// Simple root route to verify env is working
+app.get("/", (req, res) => {
+  res.send(`Hello, CUSTOM_VAR is: ${process.env.CUSTOM_VAR || "(not set)"}`);
+});
+
 //Middleware
 app.use(express.static("public")); //Serves static files from the public folder (HTML, CSS, JS).
 
@@ -18,10 +23,6 @@ app.use(express.static("public")); //Serves static files from the public folder 
 const calculatorRoutes = require("./routers/CalculatorRoutes"); //Imports the router from CalculatorRoutes.js.
 app.use("/calculator", calculatorRoutes); //Mounts the router so routes like /add, /minus are handled.
 
-// Simple root route to verify env is working
-app.get("/", (req, res) => {
-  res.send(`Hello, CUSTOM_VAR is: ${process.env.CUSTOM_VAR || "(not set)"}`);
-});
 
 //Global error-handling middleware. Error handler function from expressjs.com. The other way of handling the error in inside a function
 app.use((err, req, res, next) => {
